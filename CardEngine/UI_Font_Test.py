@@ -45,7 +45,7 @@ def test():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-                break
+                return
 
         screen.blit(background, (0, 0))
         text1.render(screen)

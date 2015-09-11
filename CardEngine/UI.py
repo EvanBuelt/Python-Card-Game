@@ -55,8 +55,6 @@ class InheritanceError(Exception):
 
 
 class UIElement(object):
-    def __init__(self):
-        raise InheritanceError('Function not defined')
 
     def render(self, surface):
         raise InheritanceError('Function not defined')
@@ -102,14 +100,14 @@ class Card(UIElement):
 
 class Text(UIElement):
     def __init__(self, rect=None, text='',
-                 bgColor=TRANSPARENT, fgColor=BLACK, font=None):
+                 bg_color=TRANSPARENT, fg_color=BLACK, font=None):
         if rect is None:
             self._rect = pygame.Rect(0, 0, 60, 30)
         else:
             self._rect = pygame.Rect(rect)
 
-        self._bgColor = bgColor
-        self._fgColor = fgColor
+        self._bgColor = bg_color
+        self._fgColor = fg_color
 
         if text is '':
             self._text = 'Text'
@@ -141,85 +139,85 @@ class Text(UIElement):
         self._surfaceNormal.fill(self._bgColor)
 
         # Draw text on surface
-        textSurf = self.font.render(self._text, True, self._fgColor)
-        textRect = textSurf.get_rect()
-        textRect.center = int(w / 2), int(h / 2)
-        self._surfaceNormal.blit(textSurf, textRect)
+        text_surf = self.font.render(self._text, True, self._fgColor)
+        text_rect = text_surf.get_rect()
+        text_rect.center = int(w / 2), int(h / 2)
+        self._surfaceNormal.blit(text_surf, text_rect)
 
     def handle_event(self, event):
         # As text is display-only, no need to handle events.
         # Still need to overwrite to avoid raising an exception.
         return
 
-    def _propGetText(self):
+    def _prop_get_text(self):
         return self._text
 
-    def _propSetText(self, newText):
-        self._text = newText
+    def _prop_set_text(self, new_text):
+        self._text = new_text
         self._update()
         return
 
-    def _propGetRect(self):
+    def _prop_get_rect(self):
         return self._rect
 
-    def _propSetRect(self, newRect):
-        self._rect = pygame.Rect(newRect)
+    def _prop_set_rect(self, new_rect):
+        self._rect = pygame.Rect(new_rect)
         self._update()
         return
 
-    def _propGetFont(self):
+    def _prop_get_font(self):
         return self._font
 
-    def _propSetFont(self, newFont):
-        self._font = newFont
+    def _prop_set_font(self, new_font):
+        self._font = new_font
         self._update()
         return
 
-    def _propGetBgColor(self):
+    def _prop_get_bg_color(self):
         return self._bgColor
 
-    def _propSetBgColor(self, newBgColor):
-        self._bgColor = newBgColor
+    def _prop_set_bg_color(self, new_background_color):
+        self._bgColor = new_background_color
         self._update()
         return
 
-    def _propGetFgColor(self):
+    def _prop_get_fg_color(self):
         return self._fgColor
 
-    def _propSetFgColor(self, newFgColor):
-        self._fgColor = newFgColor
+    def _prop_set_fg_color(self, new_foreground_color):
+        self._fgColor = new_foreground_color
         self._update()
         return
 
-    def _propGetVisible(self):
+    def _prop_get_visible(self):
         return self._visible
 
-    def _propSetVisible(self, visible):
+    def _prop_set_visible(self, visible):
         self._visible = visible
         self._update()
         return
 
-    text = property(_propGetText, _propSetText)
-    rect = property(_propGetRect, _propSetRect)
-    font = property(_propGetFont, _propSetFont)
-    bgColor = property(_propGetBgColor, _propSetBgColor)
-    fgColor = property(_propGetFgColor, _propSetFgColor)
-    visible = property(_propGetVisible, _propSetVisible)
+    text = property(_prop_get_text, _prop_set_text)
+    rect = property(_prop_get_rect, _prop_set_rect)
+    font = property(_prop_get_font, _prop_set_font)
+    bgColor = property(_prop_get_bg_color, _prop_set_bg_color)
+    fgColor = property(_prop_get_fg_color, _prop_set_fg_color)
+    visible = property(_prop_get_visible, _prop_set_visible)
 
 
 class TextBox(UIElement):
-    def __init__(self, rect=None, bgText=None,
-                 bgColor=WHITE, inputTextColor=BLACK, bgTextColor=LIGHTGRAY,
-                 font=None, callbackFunction=None):
+    def __init__(self, rect=None, background_text=None, background_color=WHITE,
+                 input_text_color=BLACK, background_text_color=LIGHTGRAY,
+                 font=None, callback_function=None):
         if rect is None:
             self._rect = pygame.Rect(0, 0, 60, 30)
         else:
             self._rect = pygame.Rect(rect)
 
         # Set values for surface display
-        self._bgColor = bgColor
-        self._inputTextColor = inputTextColor
-        self._bgTextColor = bgTextColor
+        self._bgColor = background_color
+        self._inputTextColor = input_text_color
+        self._bgTextColor = background_text_color
         self._visible = True
 
         # Input text uses a list that is converted to a string (which is immutable)
@@ -227,10 +225,10 @@ class TextBox(UIElement):
         self._listInputText = []
 
         # Background text 
-        if bgText is None:
+        if background_text is None:
             self._bgText = 'Input'
         else:
-            self._bgText = bgText
+            self._bgText = background_text
 
         # If no font is given, use gentium book, font size 12
         if font is None:
@@ -239,7 +237,7 @@ class TextBox(UIElement):
             self._font = font
 
         # Set callback function for when enter is pressed.  Defaults to None
-        self._callbackFunction = callbackFunction
+        self._callbackFunction = callback_function
 
         # Track mouse click events and keyboard inputs
         self._isSelected = False
@@ -272,20 +270,20 @@ class TextBox(UIElement):
         self._surfaceInput.fill(self._bgColor)
 
         # Create background text
-        bgTextSurf = self._font.render(self._bgText, True, self._bgTextColor, self._bgColor)
-        bgTextRect = bgTextSurf.get_rect()
-        bgTextRect.left = 5
-        bgTextRect.centery = int(h / 2)
-        self._surfaceNormal.blit(bgTextSurf, bgTextRect)
+        bg_text_surf = self._font.render(self._bgText, True, self._bgTextColor, self._bgColor)
+        bg_text_rect = bg_text_surf.get_rect()
+        bg_text_rect.left = 5
+        bg_text_rect.centery = int(h / 2)
+        self._surfaceNormal.blit(bg_text_surf, bg_text_rect)
 
         # Create input text
         self._listInputText = [y for y in self._listInputText if y != '']
         self._inputText = str(''.join(self._listInputText))
-        inputTextSurf = self._font.render(self._inputText, True, self._inputTextColor, self._bgColor)
-        inputTextRect = inputTextSurf.get_rect()
-        inputTextRect.left = 5
-        inputTextRect.centery = int(h / 2)
-        self._surfaceInput.blit(inputTextSurf, inputTextRect)
+        input_text_surf = self._font.render(self._inputText, True, self._inputTextColor, self._bgColor)
+        input_text_rect = input_text_surf.get_rect()
+        input_text_rect.left = 5
+        input_text_rect.centery = int(h / 2)
+        self._surfaceInput.blit(input_text_surf, input_text_rect)
 
         # Update normal surface used not selected and no input
         pygame.draw.rect(self._surfaceNormal, BLACK, pygame.Rect((0, 0, w, h)), 1)
@@ -305,14 +303,14 @@ class TextBox(UIElement):
         pygame.draw.line(self._surfaceNormal, GRAY, (1, h - 2), (w - 2, h - 2))
         pygame.draw.line(self._surfaceNormal, GRAY, (w - 2, 1), (w - 2, h - 2))
 
-    def set_callback(self, newCallbackFunction):
+    def set_callback(self, new_callback_function):
         # Set the callback function to be called upon user hitting the enter key
-        self._callbackFunction = newCallbackFunction
+        self._callbackFunction = new_callback_function
 
     def handle_event(self, event):
         # Track only mouse presses and key presses
-        if event.type not in (
-        pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN, pygame.KEYUP, pygame.KEYDOWN) or not self._visible:
+        if event.type not in (pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN,
+                              pygame.KEYUP, pygame.KEYDOWN) or not self._visible:
             return
 
         if event.type in (pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN):
@@ -374,95 +372,95 @@ class TextBox(UIElement):
     def keyboard_up(self, event):
         pass
 
-    def _propSetRect(self, newRect):
-        self._rect = pygame.Rect(newRect)
+    def _prop_set_rect(self, new_rect):
+        self._rect = pygame.Rect(new_rect)
         self._update()
 
-    def _propGetRect(self):
+    def _prop_get_rect(self):
         return self._rect
 
-    def _propSetBgText(self, newBgText):
-        self._bgText = newBgText
+    def _prop_set_background_text(self, new_background_text):
+        self._bgText = new_background_text
         self._update()
 
-    def _propGetBgText(self):
+    def _prop_get_background_text(self):
         return self._bgText
 
-    def _propSetBgColor(self, newBgColor):
-        self._bgColor = newBgColor
+    def _prop_set_background_color(self, new_background_color):
+        self._bgColor = new_background_color
         self._update()
 
-    def _propGetBgColor(self):
+    def _prop_get_background_color(self):
         return self._bgColor
 
-    def _propSetInputText(self, newInputText):
+    def _prop_set_input_text(self, new_input_text):
         self._listInputText = []
-        for char in newInputText:
+        for char in new_input_text:
             self._listInputText.append(char)
 
-    def _propGetInputText(self):
+    def _prop_get_input_text(self):
         return self._inputText
 
-    def _propSetInputTextColor(self, newInputTextColor):
-        self._inputTextColor = newInputTextColor
+    def _prop_set_input_text_color(self, new_input_text_color):
+        self._inputTextColor = new_input_text_color
         self._update()
 
-    def _propGetInputTextColor(self):
+    def _prop_get_input_text_color(self):
         return self._inputTextColor
 
-    def _propSetBgTextColor(self, newBgTextColor):
-        self._bgTextColor = newBgTextColor
+    def _prop_set_background_text_color(self, new_background_text_color):
+        self._bgTextColor = new_background_text_color
         self._update()
 
-    def _propGetBgTextColor(self):
+    def _prop_get_background_text_color(self):
         return self._bgTextColor
 
-    def _propSetFont(self, newFont):
-        self._font = newFont
+    def _prop_set_font(self, new_font):
+        self._font = new_font
         self._update()
 
-    def _propGetFont(self):
+    def _prop_get_font(self):
         return self._font
 
-    def _propSetCallbackFunction(self, newCallbackFunction):
-        self._callbackFunction = newCallbackFunction
+    def _prop_set_callback_function(self, new_callback_function):
+        self._callbackFunction = new_callback_function
         self._update()
 
-    def _propGetCallbackFunction(self):
+    def _prop_get_callback_function(self):
         return self._callbackFunction
 
-    def _propSetVisible(self, visible):
+    def _prop_set_visible(self, visible):
         self._visible = visible
         self._update()
 
-    def _propGetVisible(self):
+    def _prop_get_visible(self):
         return self._visible
 
-    rect = property(_propGetRect, _propSetRect)
-    bgText = property(_propGetBgText, _propSetBgText)
-    bgColor = property(_propGetBgColor, _propSetBgColor)
-    inputText = property(_propGetInputText, _propSetInputText)
-    inputTextColor = property(_propGetInputTextColor, _propSetInputTextColor)
-    bgTextColor = property(_propGetBgTextColor, _propSetBgTextColor)
-    font = property(_propGetFont, _propSetFont)
-    callbackFunction = property(_propGetCallbackFunction, _propSetCallbackFunction)
-    visible = property(_propGetVisible, _propSetVisible)
+    rect = property(_prop_get_rect, _prop_set_rect)
+    bgText = property(_prop_get_background_text, _prop_set_background_text)
+    bgColor = property(_prop_get_background_color, _prop_set_background_color)
+    inputText = property(_prop_get_input_text, _prop_set_input_text)
+    inputTextColor = property(_prop_get_input_text_color, _prop_set_input_text_color)
+    bgTextColor = property(_prop_get_background_text_color, _prop_set_background_text_color)
+    font = property(_prop_get_font, _prop_set_font)
+    callbackFunction = property(_prop_get_callback_function, _prop_set_callback_function)
+    visible = property(_prop_get_visible, _prop_set_visible)
 
 
 class CheckBox(UIElement):
-    def __init__(self, rect=None, bgColor=WHITE, callbackFunction=None):
+    def __init__(self, rect=None, background_color=WHITE, callback_function=None):
         if rect is None:
             self._rect = pygame.Rect(0, 0, 14, 14)
         else:
             self._rect = pygame.Rect(rect)
 
-        self._bgColor = bgColor
+        self._bgColor = background_color
 
         self._isChecked = False
-        self._lastMouseOverCheckbox = False
+        self._lastMouseDownOverCheckBox = False
         self._visible = True
 
-        self._callbackFunction = callbackFunction
+        self._callbackFunction = callback_function
         self._surfaceNormal = pygame.Surface(self._rect.size)
         self._surfaceChecked = pygame.Surface(self._rect.size)
 
@@ -493,9 +491,9 @@ class CheckBox(UIElement):
         pygame.draw.line(self._surfaceChecked, GREEN, (3, int(h / 2)), (int(w / 2), h - 5), 3)
         pygame.draw.line(self._surfaceChecked, GREEN, (int(w / 2), h - 5), (w - 5, 4), 3)
 
-    def set_callback(self, newCallbackFunction):
+    def set_callback(self, new_callback_function):
         # Set the callback function to be called upon checkbox changing checked state
-        self._callbackFunction = newCallbackFunction
+        self._callbackFunction = new_callback_function
 
     def handle_event(self, event):
         # Track only mouse presses and key presses
@@ -515,7 +513,7 @@ class CheckBox(UIElement):
                     self._isChecked = True
                     if self._callbackFunction is not None:
                         self._callbackFunction(self)
-                self._lastMouseDownOverTextBox = False
+                self._lastMouseDownOverCheckBox = False
         else:
             self._lastMouseDownOverCheckBox = False
 
@@ -539,51 +537,51 @@ class CheckBox(UIElement):
     def mouse_up(self, event):
         pass
 
-    def _propSetRect(self, newRect):
-        self._rect = pygame.Rect(newRect)
+    def _prop_set_rect(self, new_rect):
+        self._rect = pygame.Rect(new_rect)
         self._update()
 
-    def _propGetRect(self):
+    def _prop_get_rect(self):
         return self._rect
 
-    def _propSetBgColor(self, newBgColor):
-        self._bgColor = newBgColor
+    def _prop_set_background_color(self, new_background_color):
+        self._bgColor = new_background_color
         self._update()
 
-    def _propGetBgColor(self):
+    def _prop_get_background_color(self):
         return self._bgColor
 
-    def _propSetVisible(self, newVisible):
-        self._visible = newVisible
+    def _prop_set_visible(self, new_visible):
+        self._visible = new_visible
         self._update()
 
-    def _propGetVisible(self):
+    def _prop_get_visible(self):
         return self._visible
 
-    def _propSetCallbackFunction(self, newCallbackFunction):
-        self._callbackFunction = newCallbackFunction
+    def _prop_set_callback_function(self, new_callback_function):
+        self._callbackFunction = new_callback_function
         self._update()
 
-    def _propGetCallbackFunction(self):
+    def _prop_get_callback_function(self):
         return self._callbackFunction
 
-    def _propSetIsChecked(self, isChecked):
-        self._isChecked = isChecked
+    def _prop_set_is_checked(self, is_checked):
+        self._isChecked = is_checked
         self._update()
 
-    def _propGetIsChecked(self):
+    def _prop_get_is_checked(self):
         return self._isChecked
 
-    rect = property(_propGetRect, _propSetRect)
-    bgColor = property(_propGetBgColor, _propSetBgColor)
-    visible = property(_propGetVisible, _propSetVisible)
-    callbackFunction = property(_propGetCallbackFunction, _propSetCallbackFunction)
-    checked = property(_propGetIsChecked, _propSetIsChecked)
+    rect = property(_prop_get_rect, _prop_set_rect)
+    bgColor = property(_prop_get_background_color, _prop_set_background_color)
+    visible = property(_prop_get_visible, _prop_set_visible)
+    callbackFunction = property(_prop_get_callback_function, _prop_set_callback_function)
+    checked = property(_prop_get_is_checked, _prop_set_is_checked)
 
 
 class Button(UIElement):
     def __init__(self, rect=None, text='',
-                 bgColor=LIGHTGRAY, fgColor=BLACK, font=None):
+                 background_color=LIGHTGRAY, foreground_color=BLACK, font=None):
 
         if rect is None:
             self.rect = pygame.Rect(0, 0, 30, 60)
@@ -591,8 +589,8 @@ class Button(UIElement):
             self.rect = pygame.Rect(rect)
 
         self.text = text
-        self.bgColor = bgColor
-        self.fgColor = fgColor
+        self.bgColor = background_color
+        self.fgColor = foreground_color
 
         if font is None:
             self.font = UI_FONT
@@ -606,7 +604,7 @@ class Button(UIElement):
         # tracks the state of the button
         self.buttonDown = False  # is the button currently pushed down?
         self.mouseOverButton = False  # is the mouse currently hovering over the button?
-        self.lastMouseDownOverButton = False  # was the last mouse down event over the mouse button? (Used to track clicks.)
+        self.lastMouseDownOverButton = False  # was the last mouse down event over the mouse button? (Tracks clicks.)
         self.visible = True  # is the button visible
 
         self._update()
@@ -634,11 +632,11 @@ class Button(UIElement):
         self.surfaceHighlight.fill(self.bgColor)
 
         # draw caption text for all buttons
-        captionSurf = self.font.render(self.text, True, self.fgColor, self.bgColor)
-        captionRect = captionSurf.get_rect()
-        captionRect.center = int(w / 2), int(h / 2)
-        self.surfaceNormal.blit(captionSurf, captionRect)
-        self.surfaceDown.blit(captionSurf, captionRect)
+        caption_surf = self.font.render(self.text, True, self.fgColor, self.bgColor)
+        caption_rect = caption_surf.get_rect()
+        caption_rect.center = int(w / 2), int(h / 2)
+        self.surfaceNormal.blit(caption_surf, caption_rect)
+        self.surfaceDown.blit(caption_surf, caption_rect)
 
         # draw border for normal button
         pygame.draw.rect(self.surfaceNormal, BLACK, pygame.Rect((0, 0, w, h)), 1)  # black border around everything
@@ -664,15 +662,15 @@ class Button(UIElement):
     def get_text(self):
         return self.text
 
-    def set_text(self, newText):
-        self.text = newText
+    def set_text(self, new_text):
+        self.text = new_text
 
     def handle_event(self, event):
         if event.type not in (pygame.MOUSEMOTION, pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN) or not self.visible:
             # The button only cares bout mouse-related events (or no events, if it is invisible)
             return
 
-        hasExited = False
+        has_exited = False
         if not self.mouseOverButton and self.rect.collidepoint(event.pos):
             # if mouse has entered the button:
             self.mouseOverButton = True
@@ -680,7 +678,7 @@ class Button(UIElement):
         elif self.mouseOverButton and not self.rect.collidepoint(event.pos):
             # if mouse has exited the button:
             self.mouseOverButton = False
-            hasExited = True  # call mouseExit() later, since we want mouseMove() to be handled before mouseExit()
+            has_exited = True  # call mouseExit() later, since we want mouseMove() to be handled before mouseExit()
 
         if self.rect.collidepoint(event.pos):
             # if mouse event happened over the button:
@@ -696,21 +694,21 @@ class Button(UIElement):
                 self.lastMouseDownOverButton = False
 
         # mouse up is handled whether or not it was over the button
-        doMouseClick = False
+        do_mouse_click = False
         if event.type == pygame.MOUSEBUTTONUP:
             if self.lastMouseDownOverButton:
-                doMouseClick = True
+                do_mouse_click = True
             self.lastMouseDownOverButton = False
 
             if self.buttonDown:
                 self.buttonDown = False
                 self.mouse_up(event)
 
-            if doMouseClick:
+            if do_mouse_click:
                 self.buttonDown = False
                 self.mouse_click(event)
 
-        if hasExited:
+        if has_exited:
             self.mouse_exit(event)
 
     def mouse_click(self, event):
@@ -730,292 +728,3 @@ class Button(UIElement):
 
     def mouse_up(self, event):
         pass
-
-
-class PygButton:
-    def __init__(self, rect=None, caption='',
-                 bgcolor=LIGHTGRAY, fgcolor=BLACK, font=None,
-                 normal=None, down=None, highlight=None):
-        """Create a new button object. Parameters:
-            rect - The size and position of the button as a pygame.Rect object
-                or 4-tuple of integers.
-            caption - The text on the button (default is blank)
-            bgcolor - The background color of the button (default is a light
-                gray color)
-            fgcolor - The foreground color (i.e. the color of the text).
-                Default is black.
-            font - The pygame.font.Font object for the font of the text.
-                Default is freesansbold in point 14.
-            normal - A pygame.Surface object for the button's normal
-                appearance.
-            down - A pygame.Surface object for the button's pushed down
-                appearance.
-            highlight - A pygame.Surface object for the button's appearance
-                when the mouse is over it.
-
-            If the Surface objects are used, then the caption, bgcolor,
-            fgcolor, and font parameters are ignored (and vice versa).
-            Specifying the Surface objects lets the user use a custom image
-            for the button.
-            The normal, down, and highlight Surface objects must all be the
-            same size as each other. Only the normal Surface object needs to
-            be specified. The others, if left out, will default to the normal
-            surface.
-            """
-        if rect is None:
-            self._rect = pygame.Rect(0, 0, 30, 60)
-        else:
-            self._rect = pygame.Rect(rect)
-
-        self._caption = caption
-        self._bgcolor = bgcolor
-        self._fgcolor = fgcolor
-
-        if font is None:
-            self._font = PYGBUTTON_FONT
-        else:
-            self._font = font
-
-        # tracks the state of the button
-        self.buttonDown = False  # is the button currently pushed down?
-        self.mouseOverButton = False  # is the mouse currently hovering over the button?
-        self.lastMouseDownOverButton = False  # was the last mouse down event over the mouse button? (Used to track clicks.)
-        self._visible = True  # is the button visible
-        self.customSurfaces = False  # button starts as a text button instead of having custom images for each surface
-
-        if normal is None:
-            # create the surfaces for a text button
-            self.surfaceNormal = pygame.Surface(self._rect.size)
-            self.surfaceDown = pygame.Surface(self._rect.size)
-            self.surfaceHighlight = pygame.Surface(self._rect.size)
-            self._update()  # draw the initial button images
-        else:
-            # create the surfaces for a custom image button
-            self.setSurfaces(normal, down, highlight)
-
-    def handleEvent(self, eventObj):
-        """All MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN event objects
-        created by Pygame should be passed to this method. handleEvent() will
-        detect if the event is relevant to this button and change its state.
-
-        There are two ways that your code can respond to button-events. One is
-        to inherit the PygButton class and override the mouse*() methods. The
-        other is to have the caller of handleEvent() check the return value
-        for the strings 'enter', 'move', 'down', 'up', 'click', or 'exit'.
-
-        Note that mouseEnter() is always called before mouseMove(), and
-        mouseMove() is always called before mouseExit(). Also, mouseUp() is
-        always called before mouseClick().
-
-        buttonDown is always True when mouseDown() is called, and always False
-        when mouseUp() or mouseClick() is called. lastMouseDownOverButton is
-        always False when mouseUp() or mouseClick() is called."""
-
-        if eventObj.type not in (pygame.MOUSEMOTION,
-                                 pygame.MOUSEBUTTONUP,
-                                 pygame.MOUSEBUTTONDOWN) or not self._visible:
-            # The button only cares bout mouse-related events (or no events, if it is invisible)
-            return []
-
-        retVal = []
-
-        hasExited = False
-        if not self.mouseOverButton and self._rect.collidepoint(eventObj.pos):
-            # if mouse has entered the button:
-            self.mouseOverButton = True
-            self.mouseEnter(eventObj)
-            retVal.append('enter')
-        elif self.mouseOverButton and not self._rect.collidepoint(eventObj.pos):
-            # if mouse has exited the button:
-            self.mouseOverButton = False
-            hasExited = True  # call mouseExit() later, since we want mouseMove() to be handled before mouseExit()
-
-        if self._rect.collidepoint(eventObj.pos):
-            # if mouse event happened over the button:
-            if eventObj.type == pygame.MOUSEMOTION:
-                self.mouseMove(eventObj)
-                retVal.append('move')
-            elif eventObj.type == pygame.MOUSEBUTTONDOWN:
-                self.buttonDown = True
-                self.lastMouseDownOverButton = True
-                self.mouseDown(eventObj)
-                retVal.append('down')
-        else:
-            if eventObj.type in (pygame.MOUSEBUTTONUP, pygame.MOUSEBUTTONDOWN):
-                # if an up/down happens off the button, then the next up won't cause mouseClick()
-                self.lastMouseDownOverButton = False
-
-        # mouse up is handled whether or not it was over the button
-        doMouseClick = False
-        if eventObj.type == pygame.MOUSEBUTTONUP:
-            if self.lastMouseDownOverButton:
-                doMouseClick = True
-            self.lastMouseDownOverButton = False
-
-            if self.buttonDown:
-                self.buttonDown = False
-                self.mouseUp(eventObj)
-                retVal.append('up')
-
-            if doMouseClick:
-                self.buttonDown = False
-                self.mouseClick(eventObj)
-                retVal.append('click')
-
-        if hasExited:
-            self.mouseExit(eventObj)
-            retVal.append('exit')
-
-        return retVal
-
-    def draw(self, surfaceObj):
-        """Blit the current button's appearance to the surface object."""
-        if self._visible:
-            if self.buttonDown:
-                surfaceObj.blit(self.surfaceDown, self._rect)
-            elif self.mouseOverButton:
-                surfaceObj.blit(self.surfaceHighlight, self._rect)
-            else:
-                surfaceObj.blit(self.surfaceNormal, self._rect)
-
-    def _update(self):
-        """Redraw the button's Surface object. Call this method when the button has changed appearance."""
-        if self.customSurfaces:
-            self.surfaceNormal = pygame.transform.smoothscale(self.origSurfaceNormal, self._rect.size)
-            self.surfaceDown = pygame.transform.smoothscale(self.origSurfaceDown, self._rect.size)
-            self.surfaceHighlight = pygame.transform.smoothscale(self.origSurfaceHighlight, self._rect.size)
-            return
-
-        w = self._rect.width  # syntactic sugar
-        h = self._rect.height  # syntactic sugar
-
-        # fill background color for all buttons
-        self.surfaceNormal.fill(self.bgcolor)
-        self.surfaceDown.fill(self.bgcolor)
-        self.surfaceHighlight.fill(self.bgcolor)
-
-        # draw caption text for all buttons
-        captionSurf = self._font.render(self._caption, True, self.fgcolor, self.bgcolor)
-        captionRect = captionSurf.get_rect()
-        captionRect.center = int(w / 2), int(h / 2)
-        self.surfaceNormal.blit(captionSurf, captionRect)
-        self.surfaceDown.blit(captionSurf, captionRect)
-
-        # draw border for normal button
-        pygame.draw.rect(self.surfaceNormal, BLACK, pygame.Rect((0, 0, w, h)), 1)  # black border around everything
-        pygame.draw.line(self.surfaceNormal, WHITE, (1, 1), (w - 2, 1))
-        pygame.draw.line(self.surfaceNormal, WHITE, (1, 1), (1, h - 2))
-        pygame.draw.line(self.surfaceNormal, DARKGRAY, (1, h - 1), (w - 1, h - 1))
-        pygame.draw.line(self.surfaceNormal, DARKGRAY, (w - 1, 1), (w - 1, h - 1))
-        pygame.draw.line(self.surfaceNormal, GRAY, (2, h - 2), (w - 2, h - 2))
-        pygame.draw.line(self.surfaceNormal, GRAY, (w - 2, 2), (w - 2, h - 2))
-
-        # draw border for down button
-        pygame.draw.rect(self.surfaceDown, BLACK, pygame.Rect((0, 0, w, h)), 1)  # black border around everything
-        pygame.draw.line(self.surfaceDown, WHITE, (1, 1), (w - 2, 1))
-        pygame.draw.line(self.surfaceDown, WHITE, (1, 1), (1, h - 2))
-        pygame.draw.line(self.surfaceDown, DARKGRAY, (1, h - 2), (1, 1))
-        pygame.draw.line(self.surfaceDown, DARKGRAY, (1, 1), (w - 2, 1))
-        pygame.draw.line(self.surfaceDown, GRAY, (2, h - 3), (2, 2))
-        pygame.draw.line(self.surfaceDown, GRAY, (2, 2), (w - 3, 2))
-
-        # draw border for highlight button
-        self.surfaceHighlight = self.surfaceNormal
-
-    def mouseClick(self, event):
-        pass  # This class is meant to be overridden.
-
-    def mouseEnter(self, event):
-        pass  # This class is meant to be overridden.
-
-    def mouseMove(self, event):
-        pass  # This class is meant to be overridden.
-
-    def mouseExit(self, event):
-        pass  # This class is meant to be overridden.
-
-    def mouseDown(self, event):
-        pass  # This class is meant to be overridden.
-
-    def mouseUp(self, event):
-        pass  # This class is meant to be overridden.
-
-    def setSurfaces(self, normalSurface, downSurface=None, highlightSurface=None):
-        """Switch the button to a custom image type of button (rather than a
-        text button). You can specify either a pygame.Surface object or a
-        string of a filename to load for each of the three button appearance
-        states."""
-        if downSurface is None:
-            downSurface = normalSurface
-        if highlightSurface is None:
-            highlightSurface = normalSurface
-
-        if type(normalSurface) == str:
-            self.origSurfaceNormal = pygame.image.load(normalSurface)
-        if type(downSurface) == str:
-            self.origSurfaceDown = pygame.image.load(downSurface)
-        if type(highlightSurface) == str:
-            self.origSurfaceHighlight = pygame.image.load(highlightSurface)
-
-        if self.origSurfaceNormal.get_size() != self.origSurfaceDown.get_size() != self.origSurfaceHighlight.get_size():
-            raise Exception('Size Mismatch')
-
-        self.surfaceNormal = self.origSurfaceNormal
-        self.surfaceDown = self.origSurfaceDown
-        self.surfaceHighlight = self.origSurfaceHighlight
-        self.customSurfaces = True
-        self._rect = pygame.Rect(
-            (self._rect.left, self._rect.top, self.surfaceNormal.get_width(), self.surfaceNormal.get_height()))
-
-    def _propGetCaption(self):
-        return self._caption
-
-    def _propSetCaption(self, captionText):
-        self.customSurfaces = False
-        self._caption = captionText
-        self._update()
-
-    def _propGetRect(self):
-        return self._rect
-
-    def _propSetRect(self, newRect):
-        # Note that changing the attributes of the Rect won't update the button. You have to re-assign the rect member.
-        self._update()
-        self._rect = newRect
-
-    def _propGetVisible(self):
-        return self._visible
-
-    def _propSetVisible(self, setting):
-        self._visible = setting
-
-    def _propGetFgColor(self):
-        return self._fgcolor
-
-    def _propSetFgColor(self, setting):
-        self.customSurfaces = False
-        self._fgcolor = setting
-        self._update()
-
-    def _propGetBgColor(self):
-        return self._bgcolor
-
-    def _propSetBgColor(self, setting):
-        self.customSurfaces = False
-        self._bgcolor = setting
-        self._update()
-
-    def _propGetFont(self):
-        return self._font
-
-    def _propSetFont(self, setting):
-        self.customSurfaces = False
-        self._font = setting
-        self._update()
-
-    caption = property(_propGetCaption, _propSetCaption)
-    rect = property(_propGetRect, _propSetRect)
-    visible = property(_propGetVisible, _propSetVisible)
-    fgcolor = property(_propGetFgColor, _propSetFgColor)
-    bgcolor = property(_propGetBgColor, _propSetBgColor)
-    font = property(_propGetFont, _propSetFont)
