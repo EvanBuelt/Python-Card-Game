@@ -12,26 +12,34 @@ def display_checked(checkbox_object):
     print "Checkbox ", checkbox_object, " has checked: ", checkbox_object.checked
 
 
+def display_button(button_object):
+    print "Button ", button_object, " has been pressed: ", button_object.text
+
+
 def test():
     my_test_engine = TestEngine(400, 300, 'Testing different UI elements')
 
     # Create UI elements
-    text1 = UI.Text(rect=pygame.Rect(30, 30, 60, 20), text='Hello')
-    text2 = UI.Text(rect=pygame.Rect(30, 65, 60, 20), text='World!', bg_color=(200, 200, 200, 50))
-    text3 = UI.Text(rect=pygame.Rect(30, 100, 60, 20), text='0', bg_color=(70, 200, 70))
-    textbox1 = UI.TextBox(rect=pygame.Rect(100, 30, 180, 20), background_text='Username')
-    textbox2 = UI.TextBox(rect=pygame.Rect(100, 65, 180, 20), background_text='Password')
-    checkbox1 = UI.CheckBox(rect=pygame.Rect(290, 30, 14, 14))
-    checkbox2 = UI.CheckBox(rect=pygame.Rect(290, 65, 14, 14))
-    button1 = UI.Button(rect=pygame.Rect(310, 30, 70, 20), text='Press me')
-    button2 = UI.Button(rect=pygame.Rect(310, 65, 50, 20), text='Don\'t')
-    text4 = UI.Text(rect=pygame.Rect(100, 90, 120, 20), text='')
+    text1 = UI.Text(my_test_engine, rect=pygame.Rect(30, 30, 60, 20), text='Hello')
+    text2 = UI.Text(my_test_engine, rect=pygame.Rect(30, 65, 60, 20), text='World!',
+                    background_color=(200, 200, 200, 50))
+    text3 = UI.Text(my_test_engine, rect=pygame.Rect(30, 100, 60, 20), text='0', background_color=(70, 200, 70))
+    textbox1 = UI.TextBox(my_test_engine, rect=pygame.Rect(100, 30, 180, 20), background_text='Username')
+    textbox2 = UI.TextBox(my_test_engine, rect=pygame.Rect(100, 65, 180, 20), background_text='Password')
+    checkbox1 = UI.CheckBox(my_test_engine, rect=pygame.Rect(290, 30, 14, 14))
+    checkbox2 = UI.CheckBox(my_test_engine, rect=pygame.Rect(290, 65, 14, 14))
+    button1 = UI.Button(my_test_engine, rect=pygame.Rect(310, 30, 70, 20), text='Press me')
+    button2 = UI.Button(my_test_engine, rect=pygame.Rect(310, 65, 50, 20), text='Don\'t')
+    text4 = UI.Text(my_test_engine, rect=pygame.Rect(100, 90, 120, 20), text='')
 
     textbox1.set_callback(display_text_input)
     textbox2.set_callback(display_text_input)
 
     checkbox1.set_callback(display_checked)
     checkbox2.set_callback(display_checked)
+
+    button1.set_callback(display_button)
+    button2.set_callback(display_button)
 
     # Add UI elements to list
     my_test_engine.add_ui_element(text1)
@@ -49,6 +57,7 @@ def test():
     test_text(text1)
     test_textbox(textbox1)
 
+    # test moving text and setting visibility
     text1.rect = pygame.Rect(30, 20, text1.rect.width, text1.rect.height)
     text2.visible = False
 
@@ -127,8 +136,8 @@ def test_text(ui_text):
     text = ui_text.text
     rect = ui_text.rect
     font = ui_text.font
-    foreground_color = ui_text.fgColor
-    background_color = ui_text.bgColor
+    foreground_color = ui_text.text_color
+    background_color = ui_text.background_color
     visible = ui_text.visible
 
     # Print original contents.
@@ -137,8 +146,8 @@ def test_text(ui_text):
     print ui_text.text
     print ui_text.rect
     print ui_text.font
-    print ui_text.fgColor
-    print ui_text.bgColor
+    print ui_text.text_color
+    print ui_text.background_color
     print ui_text.visible
     print ''
 
@@ -146,8 +155,8 @@ def test_text(ui_text):
     ui_text.text = ui_text.text
     ui_text.rect = ui_text.rect
     ui_text.font = ui_text.font
-    ui_text.fgColor = ui_text.fgColor
-    ui_text.bgColor = ui_text.bgColor
+    ui_text.text_color = ui_text.text_color
+    ui_text.background_color = ui_text.background_color
     ui_text.visible = ui_text.visible
 
     # Print contents after using in-built properties.
@@ -155,8 +164,8 @@ def test_text(ui_text):
     print ui_text.text
     print ui_text.rect
     print ui_text.font
-    print ui_text.fgColor
-    print ui_text.bgColor
+    print ui_text.text_color
+    print ui_text.background_color
     print ui_text.visible
     print ''
 
@@ -167,9 +176,9 @@ def test_text(ui_text):
         test_success = False
     if font != ui_text.font:
         test_success = False
-    if foreground_color != ui_text.fgColor:
+    if foreground_color != ui_text.text_color:
         test_success = False
-    if background_color != ui_text.bgColor:
+    if background_color != ui_text.background_color:
         test_success = False
     if visible != ui_text.visible:
         test_success = False
@@ -191,11 +200,10 @@ def test_textbox(ui_textbox):
 
     # Get data from textbox class
     rect = ui_textbox.rect
-    background_color = ui_textbox.bgColor
-    background_text = ui_textbox.bgText
-    background_text_color = ui_textbox.bgTextColor
+    background_color = ui_textbox.backgroundColor
+    background_text = ui_textbox.backgroundText
+    background_text_color = ui_textbox.backgroundTextColor
     input_text = ui_textbox.inputText
-    list_input_text = ui_textbox.listInputText
     input_text_color = ui_textbox.inputTextColor
     font = ui_textbox.font
     callback_function = ui_textbox.callbackFunction
@@ -205,11 +213,10 @@ def test_textbox(ui_textbox):
     print ''
     print ui_textbox
     print ui_textbox.rect
-    print ui_textbox.bgColor
-    print ui_textbox.bgText
-    print ui_textbox.bgTextColor
+    print ui_textbox.backgroundColor
+    print ui_textbox.backgroundText
+    print ui_textbox.backgroundTextColor
     print ui_textbox.inputText
-    print ui_textbox.listInputText
     print ui_textbox.inputTextColor
     print ui_textbox.font
     print ui_textbox.callbackFunction
@@ -218,11 +225,11 @@ def test_textbox(ui_textbox):
 
     # Test each property.
     ui_textbox.rect = ui_textbox.rect
-    ui_textbox.bgText = ui_textbox.bgText
-    ui_textbox.bgColor = ui_textbox.bgColor
+    ui_textbox.backgroundText = ui_textbox.backgroundText
+    ui_textbox.backgroundColor = ui_textbox.backgroundColor
     ui_textbox.inputText = ui_textbox.inputText
     ui_textbox.inputTextColor = ui_textbox.inputTextColor
-    ui_textbox.bgTextColor = ui_textbox.bgTextColor
+    ui_textbox.backgroundTextColor = ui_textbox.backgroundTextColor
     ui_textbox.font = ui_textbox.font
     ui_textbox.callbackFunction = ui_textbox.callbackFunction
     ui_textbox.visible = ui_textbox.visible
@@ -230,11 +237,10 @@ def test_textbox(ui_textbox):
     # Print contents after using in-built properties.
     print ''
     print ui_textbox.rect
-    print ui_textbox.bgColor
-    print ui_textbox.bgText
-    print ui_textbox.bgTextColor
+    print ui_textbox.backgroundColor
+    print ui_textbox.backgroundText
+    print ui_textbox.backgroundTextColor
     print ui_textbox.inputText
-    print ui_textbox.listInputText
     print ui_textbox.inputTextColor
     print ui_textbox.font
     print ui_textbox.callbackFunction
@@ -244,15 +250,13 @@ def test_textbox(ui_textbox):
     # Test if data after testing properties is same as old data
     if rect != ui_textbox.rect:
         test_success = False
-    if background_color != ui_textbox.bgColor:
+    if background_color != ui_textbox.backgroundColor:
         test_success = False
-    if background_text != ui_textbox.bgText:
+    if background_text != ui_textbox.backgroundText:
         test_success = False
-    if background_text_color != ui_textbox.bgTextColor:
+    if background_text_color != ui_textbox.backgroundTextColor:
         test_success = False
     if input_text != ui_textbox.inputText:
-        test_success = False
-    if list_input_text != ui_textbox.listInputText:
         test_success = False
     if input_text_color != ui_textbox.inputTextColor:
         test_success = False
@@ -277,3 +281,5 @@ def test_checkbox(ui_checkbox):
 
 def test_button(ui_button):
     return ui_button
+
+test()

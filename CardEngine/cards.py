@@ -2,6 +2,7 @@ import sys
 import pygame
 import math
 import random
+import Hitbox
 
 
 class Card:
@@ -26,69 +27,6 @@ class CardArt:
         surface.blit(rotated_image, (x, y))
 
 
-class SquareHitbox:
-    def __init__(self, x, y, width, height, angle):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.angle = math.radians(angle)
-
-        self.points = []
-        self.rotatedPoints = []
-
-        self._get_points()
-        self._get_rotated_points()
-
-    def collide(self, x, y):
-        # Assuming points a, b, c, and d, and a point m with coordinates (x, y).
-        # Check the vector from point a to point m against the vectors from a to b and a to d.
-        # Vector math to check if a point is inside the hitbox.  Allows hitbox to be rotated to any angle
-        vector_am = Vector(self.rotatedPoints[0].x - x,
-                           self.rotatedPoints[0].y - y)
-        vector_ab = Vector(self.rotatedPoints[0].x - self.rotatedPoints[1].x,
-                           self.rotatedPoints[0].y - self.rotatedPoints[1].y)
-        vector_ad = Vector(self.rotatedPoints[0].x - self.rotatedPoints[3].x,
-                           self.rotatedPoints[0].y - self.rotatedPoints[3].y)
-        if 0 <= vector_am * vector_ab < vector_ab * vector_ab and 0 <= vector_am * vector_ad < vector_ad * vector_ad:
-            return True
-        else:
-            return False
-
-    def update(self, x=None, y=None, width=None, height=None, angle=None):
-        if x is not None:
-            self.x = x
-        if y is not None:
-            self.y = y
-        if width is not None:
-            self.width = width
-        if height is not None:
-            self.height = height
-        if angle is not None:
-            self.angle = math.radians(angle)
-
-        self._get_points()
-        self._get_rotated_points()
-
-    def _get_points(self):
-        self.points = []
-        self.points.append(Point(self.x, self.y))
-        self.points.append(Point(self.x + self.width, self.y))
-        self.points.append(Point(self.x + self.width, self.y + self.height))
-        self.points.append(Point(self.x, self.y + self.height))
-
-    def _get_rotated_points(self):
-        # Use Point 0 as reference for rotating every point
-        x, y = self.points[0].x, self.points[0].y
-
-        self.rotatedPoints = []
-        for point in self.points:
-            self.rotatedPoints.append(point.copy())
-
-        for point in self.rotatedPoints:
-            point.rotate_counterclockwise(x, y, self.angle)
-
-
 class CardDisplay:
     def __init__(self, card, front_art, back_art, x, y, z, angle, front_view):
         self.card = card
@@ -101,7 +39,7 @@ class CardDisplay:
         self.frontView = front_view
         self.width = front_art.image.get_width()
         self.height = front_art.image.get_height()
-        self.hitbox = SquareHitbox(x, y, self.width, self.height, angle)
+        self.hitbox = Hitbox.SquareHitbox(x, y, self.width, self.height, angle)
 
     def update(self, x=None, y=None, z=None, angle=None, front_view=None):
         if x is not None:
@@ -230,75 +168,6 @@ class HandDisplay:
                                 front_view=self.front_view)
 
 
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def copy(self):
-        return Point(self.x, self.y)
-
-    def translate(self, dx, dy):
-        self.x += dx
-        self.y += dy
-
-    def rotate_clockwise(self, x, y, angle):
-        nx = math.cos(angle) * (self.x - x) - math.sin(angle) * (self.y - y) + x
-        ny = math.sin(angle) * (self.x - x) + math.cos(angle) * (self.y - y) + y
-
-        self.x = nx
-        self.y = ny
-
-    def rotate_counterclockwise(self, x, y, angle):
-        self.rotate_clockwise(x, y, -1 * angle)
-
-    def scale(self, x, y, scalar):
-        self.x = math.fabs(self.x - x) * scalar
-        self.y = math.fabs(self.y - y) * scalar
-
-    def reflect(self, axis):
-        if axis is 'x' or axis is 'X':
-            self.x *= -1
-        elif axis is 'y' or axis is 'Y':
-            self.y *= -1
-
-
-class Vector:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def get_magnitude(self):
-        return math.sqrt(pow(self.x, 2) + pow(self.y, 2))
-
-    def get_radians(self):
-        return math.acos(self.x / self.get_magnitude())
-
-    def get_degrees(self):
-        return math.degrees(self.get_radians())
-
-    def __iadd__(self, other):
-        self.x += other.x
-        self.y += other.y
-        return self
-
-    def __isub__(self, other):
-        self.x -= other.x
-        self.y -= other.y
-        return self
-
-    def __imul__(self, num):
-        self.x *= num
-        self.y *= num
-
-    def __idiv__(self, num):
-        self.x /= num
-        self.y /= num
-
-    def __mul__(self, other):
-        return self.x * other.x + self.y * other.y
-
-
 class MouseButton:
     LEFT = 1
     MIDDLE = 2
@@ -306,11 +175,13 @@ class MouseButton:
     WHEEL_UP = 4
     WHEEL_DOWN = 5
 
+
 class Direction:
     UP = 1
     RIGHT = 2
     DOWN = 3
     LEFT = 4
+
 
 class Side:
     TOP = 1
@@ -323,9 +194,11 @@ class Side:
     BOTTOMRIGHT = 7
     BOTTOMLEFT = 8
 
+
 class Orientation:
     VERTICAL = 1
     HORIZONTAL = 2
+
 
 class EventHandler:
     def __init__(self):
@@ -348,7 +221,7 @@ class EventHandler:
 
 class Engine:
     # Pygame Display
-    DISPLAYSURF = None
+    DISPLAY_SURFACE = None
     width = 0
     height = 0
 
@@ -371,7 +244,7 @@ class Engine:
         pygame.init()
         cls.width = width
         cls.height = height
-        cls.DISPLAYSURF = pygame.display.set_mode((width, height), 0, 32)
+        cls.DISPLAY_SURFACE = pygame.display.set_mode((width, height), 0, 32)
         pygame.display.set_caption('Card Game')
 
         # Link mouse click event to card click event function 
@@ -403,10 +276,10 @@ class Engine:
 
     @classmethod
     def render(cls):
-        cls.DISPLAYSURF.fill((70, 200, 70))
+        cls.DISPLAY_SURFACE.fill((70, 200, 70))
         cls._card_display_sort()
         for card in cls.cards:
-            card.render(cls.DISPLAYSURF)
+            card.render(cls.DISPLAY_SURFACE)
         pygame.display.update()
 
     @classmethod
