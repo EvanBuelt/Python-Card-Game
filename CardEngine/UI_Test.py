@@ -1,3 +1,4 @@
+__author__ = 'Evan'
 import UI
 import sys
 import pygame
@@ -23,14 +24,14 @@ def test():
     text1 = UI.Text(my_test_engine, rect=pygame.Rect(30, 30, 60, 20), text='Hello')
     text2 = UI.Text(my_test_engine, rect=pygame.Rect(30, 65, 60, 20), text='World!',
                     background_color=(200, 200, 200, 50))
-    text3 = UI.Text(my_test_engine, rect=pygame.Rect(30, 100, 60, 20), text='0', background_color=(70, 200, 70))
+    text3 = UI.Text(my_test_engine, rect=pygame.Rect(30, 100, 150, 20), z=5, text='0', background_color=(70, 200, 70))
+    text4 = UI.Text(my_test_engine, rect=pygame.Rect(100, 120, 120, 20), z=4, text='')
     textbox1 = UI.TextBox(my_test_engine, rect=pygame.Rect(100, 30, 180, 20), background_text='Username')
     textbox2 = UI.TextBox(my_test_engine, rect=pygame.Rect(100, 65, 180, 20), background_text='Password')
     checkbox1 = UI.CheckBox(my_test_engine, rect=pygame.Rect(290, 30, 14, 14))
     checkbox2 = UI.CheckBox(my_test_engine, rect=pygame.Rect(290, 65, 14, 14))
     button1 = UI.Button(my_test_engine, rect=pygame.Rect(310, 30, 70, 20), text='Press me')
     button2 = UI.Button(my_test_engine, rect=pygame.Rect(310, 65, 50, 20), text='Don\'t')
-    text4 = UI.Text(my_test_engine, rect=pygame.Rect(100, 90, 120, 20), text='')
 
     textbox1.set_callback(display_text_input)
     textbox2.set_callback(display_text_input)
@@ -41,18 +42,6 @@ def test():
     button1.set_callback(display_button)
     button2.set_callback(display_button)
 
-    # Add UI elements to list
-    my_test_engine.add_ui_element(text1)
-    my_test_engine.add_ui_element(text2)
-    my_test_engine.add_ui_element(text3)
-    my_test_engine.add_ui_element(textbox1)
-    my_test_engine.add_ui_element(textbox2)
-    my_test_engine.add_ui_element(checkbox1)
-    my_test_engine.add_ui_element(checkbox2)
-    my_test_engine.add_ui_element(button1)
-    my_test_engine.add_ui_element(button2)
-    my_test_engine.add_ui_element(text4)
-
     # Test setting and getting of each UI element (only one per class is necessary)
     test_text(text1)
     test_textbox(textbox1)
@@ -60,30 +49,12 @@ def test():
     # test moving text and setting visibility
     text1.rect = pygame.Rect(30, 20, text1.rect.width, text1.rect.height)
     text2.visible = False
+    text3.text = 'This was an update counter'
+    text4.text = 'This was blank'
 
     while True:
         my_test_engine.update()
         my_test_engine.render()
-
-        # someText = int(text3.get_text())
-        # someText = someText + 1
-        # text3.set_text(str(someText))
-
-        '''
-        bgColor1 = backgroundColor[0] + 1
-        bgColor2 = backgroundColor[1] + 1
-        bgColor3 = backgroundColor[2] + 1
-
-        if bgColor1 > 255 :
-            bgColor1 = 0
-        if bgColor2 > 255 :
-            bgColor2 = 0
-        if bgColor3 > 255 :
-            bgColor3 = 0
-            
-        backgroundColor = (bgColor1,bgColor2,bgColor3)
-        background.fill(backgroundColor)
-        '''
 
         pygame.time.delay(20)
 
@@ -281,5 +252,6 @@ def test_checkbox(ui_checkbox):
 
 def test_button(ui_button):
     return ui_button
+
 
 test()
