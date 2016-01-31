@@ -1,6 +1,6 @@
 
 import sys
-import pygame
+# import pygame
 import random
 
 from card import Card
@@ -38,7 +38,13 @@ class EventHandler:
       function(*args)
 
 
-class CardEngine:
+class CardEngine(object):
+  """docstring for CardEngine"""
+
+  def __init__(self, arg):
+    super(CardEngine, self).__init__()
+    self.arg = arg
+
   # Pygame Display
   DISPLAYSURFACE = None
   width = 0
@@ -98,6 +104,11 @@ class CardEngine:
 
   @classmethod
   def render(cls):
+    """
+    @summary:
+    @param cls:
+    @result:
+    """
     cls.DISPLAYSURFACE.fill((70, 200, 70))
     cls._sort_ui_elements()
     for card in cls.UIElements:

@@ -28,8 +28,8 @@ Attributes:
 """
 # @Author: Mathew Cosgrove
 # @Date:   2016-01-21 11:29:33
-# @Last Modified by:   cosgrma
-# @Last Modified time: 2016-01-21 11:48:38
+# @Last Modified by:   Mathew Cosgrove
+# @Last Modified time: 2016-01-31 03:22:50
 # REF: http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html#example-google
 # REF: http://google-styleguide.googlecode.com/svn/trunk/pyguide.html
 
@@ -59,9 +59,13 @@ class BadCardParamsExepction(BaseException):
     super(BadCardParamsExepction, self).__init__(message)
 
 
-class Card:
+class Card(object):
+  """
+  @summary: Card Class
+  """
 
   def __init__(self, gold=0, diplomacy=0, stealth=0, might=0, victory_point=0, effect="None"):
+    super(Card, self).__init__()
     # def __init__(self, **kwargs): -- look into how kwargs can make you life easier
     # defines card attributes
     self.gold = gold
@@ -86,100 +90,21 @@ class Card:
         card_sum += val
         # checks inputs against card constraints
         if val < card_constraints[attr][0] or val > card_constraints[attr][1]:
-          attributes_are_bad = True
-          print "the attributes are bad"
-          break
+          # if card constraint is violated, raise and error
+          raise BadCardParamsExepction("attributes_are_bad")
         # gets number of nonzero attributes
         elif val != 0:
           non_zero_count += 1
-    # if card constraint is violated, nullifiy the caller
-    if attributes_are_bad:
-      raise BadCardParamsExepction("bad bad bad")
-      print "setting self to None"
+
     # if number of non-zeroes is greater than 3, nullifiy the caller
     if non_zero_count > 3:
-      raise BadCardParamsExepction("bad bad bad")
-      print "setting self to None -- there are more than 3 with a non zero value"
+      raise BadCardParamsExepction("non_zero_count")
     # if sum of attributes is greater than 6, nullifiy the caller
     if card_sum > 6:
-      raise BadCardParamsExepction("bad bad bad")
-      print "setting self to None -- card total sum is greater than 6"
+      raise BadCardParamsExepction("card_sum")
     # if number of resources is odd, nullifiy the caller
     elif (card_sum - victory_point) % 2 != 0:
-      raise BadCardParamsExepction("bad bad bad")
-      print "setting self to None -- not even, makes the math too hard"
+      raise BadCardParamsExepction("odd_sum")
 
   def __str__(self):
     return "gold = %d\ndiplomacy = %d\nstealth = %d\nmight = %d\neffect = %s\nvictory_point = %d\n" % (self.gold, self.diplomacy, self.stealth, self.might, self.effect, self.victory_point)
-
-
-def main():
-  # Make this more pythonic
-  #
-  # tests for nonzeroes (more than 3)
-  card_setup_test_1 = {
-      "gold": 0,
-      "diplomacy": 1,
-      "stealth": 2,
-      "might": 3,
-      "victory_point": 2,
-      "effect": "None",
-  }
-  # tests for card_sum(more than 6)
-  card_setup_test_2 = {
-      "gold": 0,
-      "diplomacy": 99,
-      "stealth": 2,
-      "might": 0,
-      "victory_point": 2,
-      "effect": "None",
-  }
-  # tests for even resources
-  card_setup_test_3 = {
-      "gold": 0,
-      "diplomacy": 3,
-      "stealth": 2,
-      "might": 0,
-      "victory_point": 2,
-      "effect": "None",
-  }
-
-  # mycard_default = Card()
-  # print mycard_default
-
-  test_passed = False
-  try:
-    mycard_test_1 = Card(**card_setup_test_1)
-    print mycard_test_1
-  except BadCardParamsExepction as e:
-    print "got BadCardParamsExepction on test 1"
-    test_passed = True
-  except Exception as e:
-    raise
-  else:
-    pass
-  finally:
-    pass
-
-
-if __name__ == '__main__':
-  main()
-
-
-# my_test_1 = Card(**card_setup_test_1)
-# if my_test_1 is None:
-#   print "test_1 -- PASSED"
-
-# my_test_2 = Card(**card_setup_test_2)
-# if my_test_2 is None:
-#   print "test_2 -- PASSED"
-
-# my_test_3 = Card(**card_setup_test_3)
-# if my_test_3 is None:
-#   print "test_3 -- PASSED"
-
-
-# mybadcard = Card(3, 3, 3, 3, 10, "destruction")
-# if mybadcard is None:
-#   print "test passed"#!/usr/bin/env python
-# -*- coding: utf-8 -*-;

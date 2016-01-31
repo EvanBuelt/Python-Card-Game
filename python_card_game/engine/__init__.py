@@ -30,8 +30,8 @@ Attributes:
 """
 # @Author: Mathew Cosgrove
 # @Date:   2016-01-21 08:40:09
-# @Last Modified by:   cosgrma
-# @Last Modified time: 2016-01-21 08:53:58
+# @Last Modified by:   Mathew Cosgrove
+# @Last Modified time: 2016-01-31 04:45:05
 # REF: http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html#example-google
 # REF: http://google-styleguide.googlecode.com/svn/trunk/pyguide.html
 
@@ -42,3 +42,6 @@ __version__ = "0.0.1"
 __maintainer__ = "Mathew Cosgrove"
 __email__ = "cosgroma@gmail.com"
 __status__ = "Development"
+
+from engine import CardEngine
+from card import Card, BadCardParamsExepction

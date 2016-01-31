@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Python-Card-Game'
+project = u'python_card_game'
 copyright = u'2016, Mathew Cosgrove'
 
 # The version info for the project you're documenting, acts as replacement
@@ -209,7 +209,7 @@ latex_elements = {
 # [howto/manual]).
 latex_documents = [
     ('index', 'python_card_game.tex',
-     u'Python-Card-Game Documentation',
+     u'python_card_game Documentation',
      u'Mathew Cosgrove', 'manual'),
 ]
 
@@ -240,7 +240,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'python_card_game',
-     u'Python-Card-Game Documentation',
+     u'python_card_game Documentation',
      [u'Mathew Cosgrove'], 1)
 ]
 
@@ -255,7 +255,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'python_card_game',
-     u'Python-Card-Game Documentation',
+     u'python_card_game Documentation',
      u'Mathew Cosgrove',
      'python_card_game',
      'One line description of project.',

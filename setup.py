@@ -19,17 +19,17 @@ requirements = [
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+
 ]
 
 setup(
-    name='python_card_game',
+    name='Python-Card-Game',
     version='0.1.0',
-    description="A simple python module that implements a few classes need to contruct a card game",
+    description="A simple python module that implements a few classes need to construct a card game",
     long_description=readme + '\n\n' + history,
     author="Mathew Cosgrove",
     author_email='cosgroma@gmail.com',
-    url='https://github.com/cosgroma/python_card_game',
+    url='https://github.com/cosgroma/Python-Card-Game',
     packages=[
         'python_card_game',
     ],
