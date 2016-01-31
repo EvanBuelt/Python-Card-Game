@@ -2,8 +2,8 @@
 Python-Card-Game
 ===============================
 
-.. image:: https://img.shields.io/pypi/v/Python-Card-Game.svg
-        :target: https://pypi.python.org/pypi/Python-Card-Game
+.. .. image:: https://img.shields.io/pypi/0.1.0/Python-Card-Game.svg
+..         :target: https://pypi.python.org/pypi/Python-Card-Game
 
 .. image:: https://travis-ci.org/cosgroma/Python-Card-Game.svg?branch=master
         :target: https://travis-ci.org/cosgroma/Python-Card-Game
