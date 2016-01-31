@@ -5,11 +5,11 @@ Python-Card-Game
 .. image:: https://img.shields.io/pypi/v/Python-Card-Game.svg
         :target: https://pypi.python.org/pypi/Python-Card-Game
 
-.. image:: https://img.shields.io/travis/cosgroma/Python-Card-Game.svg
+.. image:: https://travis-ci.org/cosgroma/Python-Card-Game.svg?branch=master
         :target: https://travis-ci.org/cosgroma/Python-Card-Game
 
-.. image:: https://readthedocs.org/projects/Python-Card-Game/badge/?version=latest
-        :target: https://readthedocs.org/projects/Python-Card-Game/?badge=latest
+.. image:: http://readthedocs.org/projects/python-card-game/badge/?version=latest
+        :target: http://python-card-game.readthedocs.org/en/latest/?badge=latest
         :alt: Documentation Status
 
 
@@ -47,6 +47,8 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 For Fun
 ------------------
+
+Checkout markdown developed by daringfireball_.
 
 .. _daringfireball: https://daringfireball.net/projects/markdown/syntax
 
